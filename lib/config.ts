@@ -1,10 +1,10 @@
-import { ILoggerOptions } from "./types"
+import { ILoggerOptions, Level } from "./types"
 
 let config: Required<ILoggerOptions> = {
-  level: 'info',
+  level: process.env.LOG_LEVEL as Level || 'info',
   meta: {},
-  prettyPrint: false,
-  silent: false,
+  prettyPrint: !!process.env.LOG_PRETTY || false,
+  silent: !!process.env.LOG_SILENT || false,
 }
 
 export const update = (options: ILoggerOptions) => {
