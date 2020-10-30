@@ -1,6 +1,6 @@
 {
   "name": "@cubehotels/logging",
-  "description": "opinionated logging utility for microservices based on winston",
+  "description": "Preconfigured logging utility for microservices based on winston",
   "keywords": [
     "logging",
     "winston"
