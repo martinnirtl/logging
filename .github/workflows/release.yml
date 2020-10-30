@@ -1,8 +1,6 @@
 name: release
 on:
   push:
-    branches:
-      - 'master'
     tags:
       - 'v*.*.*'
 
@@ -25,11 +23,7 @@ jobs:
       - name: Build library
         run: npm run build
 
-      - name: NPM login
-        run: npm login
-
       - name: Publish package
         run: npm publish
-
-      - name: NPM logout
-        run: npm logout
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
