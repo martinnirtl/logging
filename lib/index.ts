@@ -69,7 +69,7 @@ export const getLogger = (options?: ILoggerOptions): Logger => new Logger(option
 
 const logger = new Logger()
 
-export const configure = (options: ILoggerOptions) => {
+export const setDefaults = (options: ILoggerOptions) => {
   update(options)
 }
 
