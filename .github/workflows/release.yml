@@ -25,5 +25,11 @@ jobs:
       - name: Build library
         run: npm run build
 
+      - name: NPM login
+        run: npm login
+
       - name: Publish package
         run: npm publish
+
+      - name: NPM logout
+        run: npm logout

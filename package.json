@@ -7,6 +7,8 @@
   ],
   "author": "Martin Nirtl <martin@nirtl.rocks>",
   "version": "0.1.1",
+  "homepage": "https://github.com/cubehotels/logging#readme",
+  "repository": "cubehotels/logging",
   "license": "UNLICENSED",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
