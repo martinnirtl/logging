@@ -1,5 +1,5 @@
 {
-  "name": "logging",
+  "name": "@cubehotels/logging",
   "description": "opinionated logging utility for microservices based on winston",
   "keywords": [
     "logging",
@@ -31,6 +31,6 @@
     "typescript": "^4.0.5"
   },
   "publishConfig": {
-    "access": "public"
+    "registry": "https://npm.pkg.github.com/"
   }
 }
