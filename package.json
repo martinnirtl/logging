@@ -6,7 +6,7 @@
     "winston"
   ],
   "author": "Martin Nirtl <martin@nirtl.rocks>",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "homepage": "https://github.com/cubehotels/logging#readme",
   "repository": "cubehotels/logging",
   "license": "UNLICENSED",
