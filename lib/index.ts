@@ -1,8 +1,8 @@
 import debug from 'debug'
-import { createLogger, format, transports, Logger as WinstonLogger } from 'winston'
 
 import { IDefaultMetadata, ILoggerOptions, IMetadata, Level } from './types'
-import { get, update } from './config'
+import { update } from './config'
+import { WinstonLogger, createWinstonLogger, getWinstonLoggerOptions } from './winston'
 
 const dlog = debug('@martinnirtl/logging:main')
 
@@ -12,21 +12,11 @@ export class Logger {
   constructor(options?: ILoggerOptions) {
     dlog('creating logger %O', options)
 
-    this.logger = createLogger({
-      level: options?.level || get('level') as Level,
-      defaultMeta: { ...get('meta') as {}, ...options?.meta },
-      format: format.combine(
-        format.metadata(),
-        format.timestamp(),
-        format.ms(),
-        format.errors(),
-        options?.prettyPrint || get('prettyPrint') as boolean ? format.prettyPrint({ colorize: true }) : format.json(),
-      ),
-      transports: [
-        new transports.Console()
-      ],
-      silent: options?.silent || get('silent') as boolean,
-    })
+    this.logger = createWinstonLogger(options)
+  }
+
+  configure(options?: ILoggerOptions) {
+    this.logger.configure(getWinstonLoggerOptions(options))
   }
 
   setLevel(level: Level) {
@@ -75,7 +65,9 @@ export const getLogger = (options?: ILoggerOptions): Logger => new Logger(option
 const logger = new Logger()
 
 export const setDefaults = (options: ILoggerOptions) => {
-  update(options)
+  const updatedConfig = update(options)
+
+  logger.configure(updatedConfig)
 }
 
 export default logger
