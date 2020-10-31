@@ -13,7 +13,7 @@ let config: Required<ILoggerOptions> = {
 
 dlog('initialized config %O', config)
 
-export const update = (options: ILoggerOptions) => {
+export const update = (options: ILoggerOptions): Required<ILoggerOptions> => {
   dlog('updating config %O', config)
 
   config = {
@@ -22,6 +22,8 @@ export const update = (options: ILoggerOptions) => {
   }
 
   dlog('to %O', config)
+
+  return config
 }
 
 export const get = (key: keyof ILoggerOptions): unknown => {
