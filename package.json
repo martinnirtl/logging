@@ -6,7 +6,7 @@
     "winston"
   ],
   "author": "Martin Nirtl <martin@nirtl.rocks>",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "https://github.com/martinnirtl/logging#readme",
   "repository": "martinnirtl/logging",
   "license": "UNLICENSED",
