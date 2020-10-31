@@ -7,13 +7,13 @@ Preconfigured logging utility for microservices based on winston.
 Install via `npm`:
 
 ```
-npm install --save @cubehotels/logging
+npm install --save @martinnirtl/logging
 ```
 
 Or `yarn`:
 
 ```
-yarn add @cubehotels/logging
+yarn add @martinnirtl/logging
 ```
 
 ## Configuration
@@ -21,7 +21,7 @@ yarn add @cubehotels/logging
 Programmatically configure library:
 
 ```javascript
-import logger, { setDefaults } from '@cubehotels/logging'
+import logger, { setDefaults } from '@martinnirtl/logging'
 
 setDefaults({
   level: 'warn',
@@ -48,7 +48,7 @@ LOG_SILENT=1
 Singleton pattern:
 
 ```javascript
-import logger, { setDefaults } from '@cubehotels/logging'
+import logger, { setDefaults } from '@martinnirtl/logging'
 
 setDefaults({
   level: 'debug',
@@ -63,7 +63,7 @@ logger.info('starting application...', { date: new Date() })
 Or dedicated loggers:
 
 ```javascript
-import { getLogger, setDefaults } from '@cubehotels/logging'
+import { getLogger, setDefaults } from '@martinnirtl/logging'
 
 setDefaults({
   level: 'debug',
