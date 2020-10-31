@@ -1,12 +1,17 @@
+import debug from 'debug'
 import { createLogger, format, transports, Logger as WinstonLogger } from 'winston'
 
 import { IDefaultMetadata, ILoggerOptions, IMetadata, Level } from './types'
 import { get, update } from './config'
 
+const dlog = debug('@martinnirtl/logging:main')
+
 export class Logger {
   private logger: WinstonLogger
 
   constructor(options?: ILoggerOptions) {
+    dlog('creating logger %O', options)
+
     this.logger = createLogger({
       level: options?.level || get('level') as Level,
       defaultMeta: { ...get('meta') as {}, ...options?.meta },

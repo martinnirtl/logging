@@ -11,6 +11,8 @@ let config: Required<ILoggerOptions> = {
   silent: !!process.env.LOG_SILENT || false,
 }
 
+dlog('initialized config %O', config)
+
 export const update = (options: ILoggerOptions) => {
   dlog('updating config %O', config)
 
@@ -23,7 +25,9 @@ export const update = (options: ILoggerOptions) => {
 }
 
 export const get = (key: keyof ILoggerOptions): unknown => {
-  dlog('getting %s from config %O', key, config)
+  const value = config[key]
 
-  return config[key]
+  dlog('getting %s from config: %s', key, value)
+
+  return value
 }
