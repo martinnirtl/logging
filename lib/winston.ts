@@ -6,8 +6,8 @@ import { get } from './config'
 const baseFormat = format.combine(
   format.metadata(),
   format.timestamp(),
-  format.ms(),
   format.errors(),
+  // format.ms(),
 )
 
 const getFormat = (prettyPrint: boolean) =>
