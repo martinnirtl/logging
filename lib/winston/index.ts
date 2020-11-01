@@ -1,7 +1,7 @@
 import { createLogger, format, LoggerOptions, transports } from 'winston'
 
-import { ILoggerOptions, Level } from './types'
-import { get } from './config'
+import { ILoggerOptions, Level } from '../core/types'
+import { get } from '../core/config'
 
 const baseFormat = format.combine(
   format.metadata(),
