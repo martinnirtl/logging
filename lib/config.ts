@@ -6,7 +6,10 @@ const dlog = debug('@martinnirtl/logging:config')
 
 let config: Required<ILoggerOptions> = {
   level: process.env.LOG_LEVEL as Level || 'info',
-  meta: {},
+  metadata: Object.entries(process.env).filter(([key]) => key.startsWith('LOG_META_')).reduce((agg, [key, val]) => ({
+    ...agg,
+    [key.substring('LOG_META_'.length).toLowerCase()]: val,
+  }), {}),
   prettyPrint: !!process.env.LOG_PRETTY || false,
   silent: !!process.env.LOG_SILENT || false,
 }

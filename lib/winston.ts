@@ -20,7 +20,7 @@ export const createWinstonLogger = (options?: ILoggerOptions) =>
 
 export const getWinstonLoggerOptions = (options?: ILoggerOptions): LoggerOptions => ({
   level: options?.level ?? get('level') as Level,
-  defaultMeta: { ...get('meta') as {}, ...options?.meta },
+  defaultMeta: { ...get('metadata') as {}, ...options?.metadata },
   format: getFormat(options?.prettyPrint ?? get('prettyPrint') as boolean),
   transports: [
     new transports.Console()

@@ -23,36 +23,36 @@ export class Logger {
     this.logger.level = level
   }
 
-  setMeta(meta: IDefaultMetadata) {
-    this.logger.defaultMeta = meta
+  setMetadata(metadata: IDefaultMetadata) {
+    this.logger.defaultMeta = metadata
   }
 
-  log(level: Level, message: string, meta?: IMetadata) {
+  log(level: Level, message: string, metadata?: IMetadata) {
     this.logger.log({
       level,
       message,
-      ...meta,
+      ...metadata,
     })
   }
 
-  silly(message: string, meta?: IMetadata) {
-    this.log('silly', message, meta)
+  silly(message: string, metadata?: IMetadata) {
+    this.log('silly', message, metadata)
   }
 
-  debug(message: string, meta?: IMetadata) {
-    this.log('debug', message, meta)
+  debug(message: string, metadata?: IMetadata) {
+    this.log('debug', message, metadata)
   }
 
-  info(message: string, meta?: IMetadata) {
-    this.log('info', message, meta)
+  info(message: string, metadata?: IMetadata) {
+    this.log('info', message, metadata)
   }
 
-  warn(message: string, meta?: IMetadata) {
-    this.log('warn', message, meta)
+  warn(message: string, metadata?: IMetadata) {
+    this.log('warn', message, metadata)
   }
 
-  error(message: string, meta?: IMetadata) {
-    this.log('error', message, meta)
+  error(message: string, metadata?: IMetadata) {
+    this.log('error', message, metadata)
   }
 
   profile(id: string | number, { level = 'info', message = '' }: { level: Level, message: string }) {
