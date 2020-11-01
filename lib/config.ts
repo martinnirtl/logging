@@ -5,6 +5,7 @@ import { ILoggerOptions, Level } from './types'
 const dlog = debug('@martinnirtl/logging:config')
 
 let config: Required<ILoggerOptions> = {
+  // fields: process.env.LOG_FIELDS?.split(',').map(field => field.trim()) || [],
   level: process.env.LOG_LEVEL as Level || 'info',
   metadata: Object.entries(process.env).filter(([key]) => key.startsWith('LOG_META_')).reduce((agg, [key, val]) => ({
     ...agg,

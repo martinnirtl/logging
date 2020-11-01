@@ -9,6 +9,7 @@ export interface IMetadata {
 }
 
 export interface ILoggerOptions {
+  // fields?: string[]
   level?: Level,
   metadata?: IDefaultMetadata,
   prettyPrint?: boolean,
