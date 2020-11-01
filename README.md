@@ -27,7 +27,6 @@ setDefaults({
   level: 'warn',
   metadata: { service: 'foo-service' },
   prettyPrint: process.env.NODE_ENV !== 'production',
-  // silent: true,
 })
 
 logger.info('hello world') // will not be printed
@@ -36,11 +35,11 @@ logger.info('hello world') // will not be printed
 Or use environment variables:
 
 ```env
-# Specify log-level (default: info, levels: [silly, debug, info, warn, error])
+# Specify log-level (default: info, options: [silly, debug, info, warn, error])
 LOG_LEVEL=debug
 
-# Add metadata tags with `LOG_META_`-prefix, e.g. set { service: 'foo-service' }
-LOG_META_SERVICE=foo-service
+# Add metadata tags with `LOG_METADATA_`-prefix, e.g. set { service: 'foo-service' }
+LOG_METADATA_SERVICE=foo-service
 
 # Pretty-print json-logs on truthy value (default: false)
 LOG_PRETTY=true
@@ -58,7 +57,7 @@ import logger, { setDefaults } from '@martinnirtl/logging'
 
 setDefaults({
   level: 'debug',
-  meta: { service: 'foo-service' },
+  metadata: { 'process-id': process.pid },
 })
 
 logger.debug('just set the logger-defaults')
@@ -73,11 +72,11 @@ import { getLogger, setDefaults } from '@martinnirtl/logging'
 
 setDefaults({
   level: 'debug',
-  meta: { service: 'foo-service' },
+  metadata: { service: 'foo-service' },
 })
 
 const logger = getLogger({
-  meta: { context: 'initialization' },
+  metadata: { context: 'initialization' },
 })
 
 logger.info('starting application...', { date: new Date() })
