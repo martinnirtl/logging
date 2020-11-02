@@ -23,7 +23,9 @@ export const getWinstonLoggerOptions = (options?: ILoggerOptions): LoggerOptions
   defaultMeta: { ...get('metadata') as {}, ...options?.metadata },
   format: getFormat(options?.prettyPrint ?? get('prettyPrint') as boolean),
   transports: [
-    new transports.Console()
+    new transports.Console({
+      handleExceptions: true,
+    })
   ],
   silent: options?.silent ?? get('silent') as boolean,
 })
