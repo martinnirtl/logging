@@ -16,6 +16,7 @@
     "dist/"
   ],
   "scripts": {
+    "dev": "tsc --watch --declaration",
     "build": "tsc --declaration",
     "release": "np"
   },
