@@ -1,9 +1,12 @@
-import { NextFunction, Request } from "express";
+import debug from 'debug'
+import { NextFunction, Request as ExpressRequest } from "express";
 import { getLogger, Logger } from "../core";
 
 import { ILoggerOptions, IMetadata, Level } from "../core/types";
 
-export interface IExtendedRequest extends Request {
+const dlog = debug('@martinnirtl/logging:express')
+
+export interface IExtendedRequest extends ExpressRequest {
   logger: Logger
 }
 
@@ -11,22 +14,25 @@ export interface IExpressMiddleware {
   (req: IExtendedRequest, res: Response, next: NextFunction): void
 }
 
-interface LogIncomingConfig {
-  level?: Level
-  metadata?: {
-    body?: boolean | string[]
-    headers?: boolean | string[]
-    query?: boolean | string[]
-    params?: boolean | string[]
-  }
+interface MetadataSelector {
+  body?: boolean | string[]
+  headers?: boolean | string[]
+  query?: boolean | string[]
+  params?: boolean | string[]
 }
+
+interface LogIncomingOptions {
+  level?: Level
+  metadata?: MetadataSelector
+}
+
 
 export interface ILoggerOptionsExpress extends ILoggerOptions {
-  addToRequest: boolean
-  logIncoming: boolean | Level | LogIncomingConfig
+  addToRequestObject?: boolean
+  logIncoming?: boolean | Level | LogIncomingOptions
 }
 
-const processLogIncoming = (config: boolean | Level | LogIncomingConfig): [enabled: boolean, level: Level] => {
+const processLogIncoming = (config?: boolean | Level | LogIncomingOptions): [enabled: boolean, level: Level] => {
   switch (typeof config) {
     case 'boolean':
       return [true, 'info']
@@ -36,13 +42,13 @@ const processLogIncoming = (config: boolean | Level | LogIncomingConfig): [enabl
       return [true, config.level || 'info']
 
     default:
-      return [false, 'info']
+      return [true, 'info']
   }
 }
 
-const getFields = (obj: Record<string, string>, { metadata }: LogIncomingConfig): Record<string, string> | undefined =>
-  metadata && metadata === true ? obj :
-    Object.entries(obj).filter(([key]) => (metadata as string[]).includes(key)).reduce((agg: Record<string, string>, [key, value], i) => {
+const getFields = (obj: Record<string, string>, fields?: boolean | string[]): Record<string, string> | undefined =>
+  fields && fields === true ? obj :
+    Object.entries(obj).filter(([key]) => (fields as string[]).includes(key)).reduce((agg: Record<string, string>, [key, value], i) => {
       if (i === 0) {
         agg = {}
       }
@@ -52,7 +58,7 @@ const getFields = (obj: Record<string, string>, { metadata }: LogIncomingConfig)
       return agg
     }, {})
 
-const getMetadata = (config: boolean | Level | LogIncomingConfig, req: Request): IMetadata => {
+const extractMetadata = (req: IExtendedRequest, config?: boolean | Level | LogIncomingOptions): IMetadata | undefined => {
   switch (typeof config) {
     case 'boolean':
       return {}
@@ -64,29 +70,35 @@ const getMetadata = (config: boolean | Level | LogIncomingConfig, req: Request):
       const metadata: IMetadata = {}
 
       if (config.metadata) {
-        for (const key of Object.keys(config.metadata)) {
-          metadata[key] = getFields((req as any)[key], config)
+        for (const key of Object.keys(config.metadata) as (keyof MetadataSelector)[]) {
+          metadata[key] = getFields(req[key], config.metadata[key])
         }
       }
 
       return metadata
 
     default:
-      return {}
+      return undefined
   }
 }
 
-export const getMiddleware = (options: ILoggerOptionsExpress): IExpressMiddleware => {
+export function getMiddleware(options: ILoggerOptionsExpress): IExpressMiddleware {
+  dlog(`init express middleware %O`, options)
+
   const [enabled, level] = processLogIncoming(options.logIncoming)
+
+  dlog('logging of incoming requests is %s', enabled ? 'enabled' : 'disabled')
 
   const logger = getLogger(options)
 
   return (req, _res, next) => {
-    req.logger = logger
+    if (options.addToRequestObject ?? true) {
+      req.logger = logger
+    }
 
     if (enabled) {
       logger[level](`[${req.method} ${req.path}] processing request...`,
-        getMetadata(options.logIncoming, req),
+        extractMetadata(req, options.logIncoming),
       )
     }
 
