@@ -2,6 +2,7 @@ import debug from 'debug'
 
 import { IDefaultMetadata, ILoggerOptions, IMetadata, Level } from './types'
 import { update } from './config'
+import { compareLevels } from './helpers'
 import { WinstonLogger, createWinstonLogger, getWinstonLoggerOptions } from '../winston'
 
 const dlog = debug('@martinnirtl/logging:main')
@@ -17,6 +18,10 @@ export class Logger {
 
   configure(options?: ILoggerOptions) {
     this.logger.configure(getWinstonLoggerOptions(options))
+  }
+
+  isLevelEnabled(level: Level) {
+    return compareLevels(this.logger.level as Level, level)
   }
 
   setLevel(level: Level) {

@@ -87,16 +87,18 @@ export function getMiddleware(options: ILoggerOptionsExpress): IExpressMiddlewar
 
   const [enabled, level] = processLogIncoming(options.logIncoming)
 
-  dlog('logging of incoming requests is %s', enabled ? 'enabled' : 'disabled')
+  dlog('logging of incoming requests is %s [level: %s]', enabled ? 'enabled' : 'disabled', level)
 
   const logger = getLogger(options)
+
+  const logIncoming = enabled && logger.isLevelEnabled(level)
 
   return (req, _res, next) => {
     if (options.addToRequestObject ?? true) {
       req.logger = logger
     }
 
-    if (enabled) {
+    if (logIncoming) {
       logger[level](`[${req.method} ${req.path}] processing request...`,
         extractMetadata(req, options.logIncoming),
       )
